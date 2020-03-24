@@ -1,0 +1,25 @@
+.create-group-button {
+  width: 15rem;
+  height: 2.5rem;
+  background-color: #aaa;
+  margin: 1.5rem;
+  cursor: pointer;
+  box-shadow: .25rem .25rem 10px #333;
+}
+
+.create-group-button:hover {
+  background-color: #666;
+}
+
+.create-group-button h2 {
+  text-align: center;
+  margin: .3rem;
+  user-select: none;
+}
+
+.groups-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0rem 2rem 0rem 2rem;
+}
