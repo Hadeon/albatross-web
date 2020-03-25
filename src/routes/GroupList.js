@@ -3,6 +3,7 @@ import '../index.css';
 import './GroupList.css';
 
 const GroupList = () => {
+
   return (
     <div className="main-container">
       <div className="groups-header">

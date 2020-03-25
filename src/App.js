@@ -5,6 +5,12 @@ import {
 } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
+import {
+  Stitch,
+  AnonymousCredential,
+  RemoteMongoClient
+} from 'mongodb-stitch-browser-sdk';
+
 import Home from './routes/Home';
 import Login from './routes/Login';
 import Group from './routes/Group';
@@ -17,15 +23,26 @@ import AuthenticatedRoute from './routes/AuthenticatedRoute';
 import Layout from './components/Layout';
 import './App.css';
 
-// Restructure App.js to include the authentication using:
-  // MongoDB Stitch?
-  // Firebase?
-  // Auth0?
+require('dotenv').config({ path: `../.env` });
 
 const combinedReducers = combineReducers({ rootReducer, authReducer });
 const store = createStore(combinedReducers);
 
 function App() {
+
+  const client = Stitch.initializeDefaultAppClient(process.env.REACT_APP_STITCH_ID);
+
+  const db = client.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas').db('albatross');
+
+  client.auth.loginWithCredential(new AnonymousCredential()).then(() =>
+    db.collection('groups').find({groupName: 'Family'}, { limit: 100}).asArray()
+  ).then(docs => {
+      console.log("Found docs", docs)
+      console.log("[MongoDB Stitch] Connected to Stitch")
+  }).catch(err => {
+    console.error(err)
+  });
+
   return (
     <Provider store={store}>
       <Router>
